@@ -30,21 +30,7 @@ public class Particles : IPatch
                 if (Array.Exists(extensions, ext => file.Name.EndsWith(ext, StringComparison.OrdinalIgnoreCase)))
                 {
                     var record = file.Record;
-                    var bytes = record.Read();
-                    string data = System.Text.Encoding.Unicode.GetString(bytes.ToArray());
-
-                    List<string> lines = data.Split("\r\n").ToList();
-                    if (lines.Count == 0) continue;
-
-                    for (int i = 0; i < lines.Count; i++)
-                    {
-                        if (lines[i].Contains("version", StringComparison.OrdinalIgnoreCase)) continue;
-                        lines[i] = "0";
-                        break;
-                    }
-
-                    string newData = string.Join("\r\n", lines);
-                    var newBytes = System.Text.Encoding.Unicode.GetBytes(newData);
+                    var newBytes = System.Text.Encoding.Unicode.GetBytes("0");
                     record.Write(newBytes);
                 }
             }
