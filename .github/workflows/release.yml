@@ -1,0 +1,63 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Triggers on version tags like v1.0.0
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+        
+    - name: Restore dependencies
+      run: dotnet restore PoeSmoother/PoeSmoother.csproj
+      
+    - name: Build Release
+      run: dotnet publish PoeSmoother/PoeSmoother.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o ./publish
+      
+    - name: Create ZIP archive
+      run: |
+        Compress-Archive -Path ./publish/* -DestinationPath PoeSmoother-${{ github.ref_name }}-win-x64.zip
+      shell: pwsh
+      
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          PoeSmoother-${{ github.ref_name }}-win-x64.zip
+        body: |
+          ## PoE Smoother ${{ github.ref_name }}
+          
+          ### What's New
+          - Performance improvements and bug fixes
+          
+          ### Installation
+          1. Download `PoeSmoother-${{ github.ref_name }}-win-x64.zip`
+          2. Extract the archive
+          3. Run `PoeSmoother.exe`
+          
+          ### Features
+          - Dark themed UI
+          - True progress bar
+          - Apply patches individually or all at once
+          - Supports both GGPK and index.bin files
+          
+          ### System Requirements
+          - Windows 10 version 2004 or later
+          - .NET 9.0 Runtime (included in self-contained build)
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
