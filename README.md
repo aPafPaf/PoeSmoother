@@ -4,8 +4,6 @@
 
 ## Features
 
-### Available Patches
-
 - **Camera Patch**
   - Adjustable default camera zoom level (1.2x to 2.4x)
 
