@@ -36,6 +36,9 @@
 - **Particles Patch**
   - Disables all particle effects in the game
 
+- **Effects Patch (Experimental)**
+  - Disables all effects in the game
+
 ### PoE 2
 
 - **Camera Patch**
@@ -67,6 +70,12 @@
 
 - **Delirium Patch**
   - Disables the delirium effects in the game
+
+- **Particles Patch**
+  - Disables all particle effects in the game
+
+- **Effects Patch (Experimental)**
+  - Disables all effects in the game
 
 ## Installation
 

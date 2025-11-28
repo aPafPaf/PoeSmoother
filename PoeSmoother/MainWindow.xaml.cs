@@ -62,6 +62,7 @@ public partial class MainWindow : Window
             new Corpse(),
             new Delirium(),
             new Particles(),
+            new Effects(),
         };
 
         foreach (var patch in patchInstances)
@@ -91,6 +92,8 @@ public partial class MainWindow : Window
             new Shadow(),
             new Light(),
             new Delirium(),
+            new Particles(),
+            new Effects(),
 
         };
 
