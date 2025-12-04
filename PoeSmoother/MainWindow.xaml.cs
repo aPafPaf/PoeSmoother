@@ -63,6 +63,7 @@ public partial class MainWindow : Window
             new Delirium(),
             new Particles(),
             new Effects(),
+            new Aoc(),
         };
 
         foreach (var patch in patchInstances)
@@ -289,7 +290,7 @@ public partial class MainWindow : Window
                 StatusTextBlock.Text = $"Applying {patch.Name} ({i + 1}/{patches.Count})...";
                 ProgressBar.Value = i;
             });
-
+            
             patch.Patch.Apply(fileTree);
             index.Save();
 
