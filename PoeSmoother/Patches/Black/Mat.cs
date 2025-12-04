@@ -20,6 +20,8 @@ public class Mat : IPatch
  }
 }  ";
 
+    private byte[]? bytesContent = null;
+
     private void CollectFileNodesRecursively(DirectoryNode dir)
     {
         foreach (var node in dir.Children)
@@ -39,10 +41,8 @@ public class Mat : IPatch
     }
 
     private void TryPatchFile(FileNode file)
-    {       
-
-        var newBytes = System.Text.Encoding.Unicode.GetBytes(matContent);
-        file.Record.Write(newBytes);
+    {
+        file.Record.Write(bytesContent);
     }
 
     private bool HasTargetExtension(string fileName) =>
@@ -72,6 +72,11 @@ public class Mat : IPatch
 
         if (metadataDir is null)
             return;
+
+        if (bytesContent is null)
+        {
+            bytesContent = System.Text.Encoding.Unicode.GetBytes(matContent);
+        }
 
         CollectFileNodesRecursively(metadataDir);
 
