@@ -46,6 +46,7 @@
                           SelectionChanged="GameSelector_SelectionChanged">
                     <ComboBoxItem Content="PoE 1"/>
                     <ComboBoxItem Content="PoE 2"/>
+                    <ComboBoxItem Content="PoE 1 Black"/>
                 </ComboBox>
             </StackPanel>
         </Grid>

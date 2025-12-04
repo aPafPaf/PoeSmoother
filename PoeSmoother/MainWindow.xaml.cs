@@ -63,7 +63,6 @@ public partial class MainWindow : Window
             new Delirium(),
             new Particles(),
             new Effects(),
-            new Aoc(),
         };
 
         foreach (var patch in patchInstances)
@@ -104,6 +103,24 @@ public partial class MainWindow : Window
         }
     }
 
+    private void InitializePoe1BlackPatches()
+    {
+        var patchInstances = new IPatch[]
+        {
+            new Camera(),
+            new Minimap(),
+            new Aoc(),
+            new Pet(),
+            new Epk(),
+            new Mat(),
+        };
+
+        foreach (var patch in patchInstances)
+        {
+            _patches.Add(new PatchViewModel(patch));
+        }
+    }
+
     private void GameSelector_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
     {
         if (_patches == null || _colorMods == null) return;
@@ -120,6 +137,10 @@ public partial class MainWindow : Window
         else if (selectedIndex == 1) // PoE 2
         {
             InitializePoe2Patches();
+        }
+        else if (selectedIndex == 2) // PoE 1 Black Screen
+        {
+            InitializePoe1BlackPatches();
         }
 
         if (ModsColorsButton != null)

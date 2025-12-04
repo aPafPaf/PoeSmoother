@@ -5,7 +5,7 @@ namespace PoeSmoother.Patches;
 public class Aoc : IPatch
 {
     public string Name => "Aoc Patch (Experimental)";
-    public object Description => "Disables all effects, sound, mesh in the game.";
+    public object Description => "Black.";
 
     private readonly string[] extensions = {
         ".aoc",
