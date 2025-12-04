@@ -18,9 +18,14 @@ public class Mat : IPatch
 ""defaultgraph"": {
  ""version"":3
  }
-}  ";
+}";
 
     private byte[]? bytesContent = null;
+
+    public Mat()
+    {
+        bytesContent = System.Text.Encoding.Unicode.GetBytes(matContent);
+    }
 
     private void CollectFileNodesRecursively(DirectoryNode dir)
     {
@@ -49,30 +54,8 @@ public class Mat : IPatch
         extensions.Any(ext =>
             fileName.EndsWith(ext, StringComparison.OrdinalIgnoreCase));
 
-    private DirectoryNode? FindDirectory(DirectoryNode start, params string[] path)
-    {
-        DirectoryNode? current = start;
-
-        foreach (var name in path)
-        {
-            current = current.Children
-                .OfType<DirectoryNode>()
-                .FirstOrDefault(c => c.Name == name);
-
-            if (current == null)
-                return null;
-        }
-
-        return current;
-    }
-
     public void Apply(DirectoryNode root)
     {
-        if (bytesContent is null)
-        {
-            bytesContent = System.Text.Encoding.Unicode.GetBytes(matContent);
-        }
-
         CollectFileNodesRecursively(root);
 
         foreach (var file in fileNodes)
