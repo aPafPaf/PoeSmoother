@@ -68,17 +68,12 @@ public class Mat : IPatch
 
     public void Apply(DirectoryNode root)
     {
-        var metadataDir = FindDirectory(root, "metadata");
-
-        if (metadataDir is null)
-            return;
-
         if (bytesContent is null)
         {
             bytesContent = System.Text.Encoding.Unicode.GetBytes(matContent);
         }
 
-        CollectFileNodesRecursively(metadataDir);
+        CollectFileNodesRecursively(root);
 
         foreach (var file in fileNodes)
         {
