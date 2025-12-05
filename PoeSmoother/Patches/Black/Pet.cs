@@ -54,8 +54,6 @@ public class Pet : IPatch
         file.Record.Write(newBytes);
     }
 
-
-
     private bool HasTargetExtension(string fileName) =>
         extensions.Any(ext =>
             fileName.EndsWith(ext, StringComparison.OrdinalIgnoreCase));

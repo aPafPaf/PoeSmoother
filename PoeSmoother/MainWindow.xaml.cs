@@ -111,6 +111,7 @@ public partial class MainWindow : Window
             new Epk(),
             new Mat(),
             new Ffx(),
+            new Hlsl(),
         };
 
         foreach (var patch in patchInstances)
