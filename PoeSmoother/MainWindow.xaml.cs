@@ -110,6 +110,7 @@ public partial class MainWindow : Window
             new Pet(),
             new Epk(),
             new Mat(),
+            new Ffx(),
         };
 
         foreach (var patch in patchInstances)
