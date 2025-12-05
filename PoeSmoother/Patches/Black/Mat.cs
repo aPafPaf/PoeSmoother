@@ -17,11 +17,8 @@ public class Mat : IPatch
 
     private byte[]? bytesContent = null;
 
-    public Mat()
-    {
-        bytesContent = System.Text.Encoding.UTF8.GetBytes(matContent);
-    }
-
+    public Mat() =>
+        bytesContent = System.Text.Encoding.Unicode.GetBytes(matContent);
 
     private void CollectFileNodesRecursively(DirectoryNode dir)
     {

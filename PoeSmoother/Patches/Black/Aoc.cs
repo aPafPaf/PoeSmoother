@@ -26,7 +26,7 @@ public class Aoc : IPatch
         "FixedMesh",
     };
 
-    public static string ClearBlockContent(string text, string blockName)
+    private string ClearBlockContent(string text, string blockName)
     {
         int nameIndex = text.IndexOf(blockName, StringComparison.Ordinal);
         if (nameIndex < 0)
@@ -54,11 +54,9 @@ public class Aoc : IPatch
         if (closeBrace < 0)
             return text;
 
-        return text.Substring(0, openBrace + 1) +
-               "\n}" +
+        return text.Substring(0, openBrace + 1) + "}" +
                text.Substring(closeBrace + 1);
     }
-
 
     private void CollectFileNodesRecursively(DirectoryNode dir)
     {
@@ -82,7 +80,8 @@ public class Aoc : IPatch
     {
         var record = file.Record;
         var bytes = record.Read();
-        string data = System.Text.Encoding.Unicode.GetString(bytes.ToArray());
+        var arrayOrigBytes = bytes.ToArray();
+        string data = System.Text.Encoding.Unicode.GetString(arrayOrigBytes);
 
         foreach (var func in _functions)
         {
@@ -90,39 +89,36 @@ public class Aoc : IPatch
         }
 
         var newBytes = System.Text.Encoding.Unicode.GetBytes(data);
+        var resultBytes = InitByteArray(arrayOrigBytes.Length);
+        Array.Copy(newBytes, resultBytes, newBytes.Length);
 
-        record.Write(newBytes);
+        record.Write(resultBytes);
+    }
+
+    private byte[] InitByteArray(int Size)
+    {
+        var bytes = new byte[Size];
+
+        // BOM UTF-16 LE
+        bytes[0] = 0xFF;
+        bytes[1] = 0xFE;
+
+        for (int i = 2; i + 1 < Size; i += 2)
+        {
+            bytes[i] = 0x20;      // ' ' (space)
+            bytes[i + 1] = 0x00;  // UTF-16 LE low byte
+        }
+
+        return bytes;
     }
 
     private bool HasTargetExtension(string fileName) =>
         extensions.Any(ext =>
             fileName.EndsWith(ext, StringComparison.OrdinalIgnoreCase));
 
-    private DirectoryNode? FindDirectory(DirectoryNode start, params string[] path)
-    {
-        DirectoryNode? current = start;
-
-        foreach (var name in path)
-        {
-            current = current.Children
-                .OfType<DirectoryNode>()
-                .FirstOrDefault(c => c.Name == name);
-
-            if (current == null)
-                return null;
-        }
-
-        return current;
-    }
-
     public void Apply(DirectoryNode root)
     {
-        var metadataDir = FindDirectory(root, "metadata");
-
-        if (metadataDir is null)
-            return;
-
-        CollectFileNodesRecursively(metadataDir);
+        CollectFileNodesRecursively(root);
 
         foreach (var file in fileNodes)
         {

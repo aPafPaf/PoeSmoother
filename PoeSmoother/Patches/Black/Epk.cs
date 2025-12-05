@@ -36,7 +36,6 @@ public class Epk : IPatch
         long originalLength = file.Record.Size;
         var newBytes = new byte[originalLength];
 
-        // UTF-16 LE BOM = FF FE
         var bom = System.Text.Encoding.Unicode.GetPreamble(); // FF FE
         int offset = 0;
 

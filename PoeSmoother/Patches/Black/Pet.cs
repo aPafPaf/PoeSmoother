@@ -34,39 +34,35 @@ public class Pet : IPatch
 
     private void TryPatchFile(FileNode file)
     {
-        var newBytes = System.Text.Encoding.Unicode.GetBytes("0");
+        int originalLength = file.Record.Size;
+        var newBytes = new byte[originalLength];
+
+        // BOM UTF-16 LE
+        newBytes[0] = 0xFF;
+        newBytes[1] = 0xFE;
+
+        // '0'
+        newBytes[2] = 0x30;
+        newBytes[3] = 0x00;
+        
+        for (int i = 4; i + 1 < originalLength; i += 2)
+        {
+            newBytes[i] = 0x20;      // ' ' (space)
+            newBytes[i + 1] = 0x00;  // UTF-16 LE low byte
+        }
+
         file.Record.Write(newBytes);
     }
+
+
 
     private bool HasTargetExtension(string fileName) =>
         extensions.Any(ext =>
             fileName.EndsWith(ext, StringComparison.OrdinalIgnoreCase));
 
-    private DirectoryNode? FindDirectory(DirectoryNode start, params string[] path)
-    {
-        DirectoryNode? current = start;
-
-        foreach (var name in path)
-        {
-            current = current.Children
-                .OfType<DirectoryNode>()
-                .FirstOrDefault(c => c.Name == name);
-
-            if (current == null)
-                return null;
-        }
-
-        return current;
-    }
-
     public void Apply(DirectoryNode root)
     {
-        var metadataDir = FindDirectory(root, "metadata");
-
-        if (metadataDir is null)
-            return;
-
-        CollectFileNodesRecursively(metadataDir);
+        CollectFileNodesRecursively(root);
 
         foreach (var file in fileNodes)
         {
