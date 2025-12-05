@@ -1,6 +1,5 @@
 ﻿using PoeSmoother.Models;
 using System.Collections.ObjectModel;
-using System.Media;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
@@ -69,8 +68,8 @@ public partial class ColorModsEditor : Window
                     color = mod.SelectedColor,
                 };
             }
-            var options = new System.Text.Json.JsonSerializerOptions 
-            { 
+            var options = new System.Text.Json.JsonSerializerOptions
+            {
                 WriteIndented = true,
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             };
@@ -105,12 +104,12 @@ public partial class ColorModsEditor : Window
                     {
                         if (colorModsDict.TryGetValue(mod.Name, out var modData))
                         {
-                            if (modData.TryGetValue("enabled", out var enabledObj) 
+                            if (modData.TryGetValue("enabled", out var enabledObj)
                                 && (enabledObj.ValueKind == System.Text.Json.JsonValueKind.True || enabledObj.ValueKind == System.Text.Json.JsonValueKind.False))
                             {
                                 mod.IsSelected = enabledObj.GetBoolean();
                             }
-                            if (modData.TryGetValue("color", out var colorObj) 
+                            if (modData.TryGetValue("color", out var colorObj)
                                 && colorObj.ValueKind == System.Text.Json.JsonValueKind.String)
                             {
                                 mod.SelectedColor = colorObj.GetString() ?? string.Empty;

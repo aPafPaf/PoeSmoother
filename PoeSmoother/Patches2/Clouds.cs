@@ -1,8 +1,4 @@
-using System;
-using System.IO;
-using System.Reflection;
 using LibBundle3.Nodes;
-using LibGGPK3.Records;
 
 namespace PoeSmoother.Patches;
 
@@ -35,7 +31,7 @@ public class Clouds : IPatch
                     string pattern = @"(""clouds_intensity"":\s*)[^,]+,";
                     string replacement = "${1}0.0,";
                     data = System.Text.RegularExpressions.Regex.Replace(data, pattern, replacement);
-                    
+
                     var newBytes = System.Text.Encoding.Unicode.GetBytes(data);
                     record.Write(newBytes);
                 }

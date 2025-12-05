@@ -1,12 +1,9 @@
-using LibBundle3;
 using LibBundledGGPK3;
 using Microsoft.Win32;
 using PoeSmoother.Models;
 using PoeSmoother.Patches;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
@@ -26,7 +23,7 @@ public partial class MainWindow : Window
         _colorMods = new ObservableCollection<ColorModsViewModel>();
         InitializeComponent();
         PatchesItemsControl.ItemsSource = _patches;
-        
+
         UpdateStatus();
 
         SourceInitialized += (s, e) => ApplyDarkTitleBar();
@@ -311,7 +308,7 @@ public partial class MainWindow : Window
                 StatusTextBlock.Text = $"Applying {patch.Name} ({i + 1}/{patches.Count})...";
                 ProgressBar.Value = i;
             });
-            
+
             patch.Patch.Apply(fileTree);
             index.Save();
 

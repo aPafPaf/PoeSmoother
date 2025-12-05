@@ -1,8 +1,4 @@
-using System;
-using System.IO;
-using System.Reflection;
 using LibBundle3.Nodes;
-using LibGGPK3.Records;
 
 namespace PoeSmoother.Patches;
 
@@ -36,7 +32,7 @@ public class Light : IPatch
                         .Replace("\"player_light\"", "\"xlayer_light\"")
                         .Replace("\"environment_mapping\"", "\"xnvironment_mapping\"")
                         .Replace("\"global_illumination\"", "\"xlobal_illumination\"");
-                    
+
                     var newBytes = System.Text.Encoding.Unicode.GetBytes(data);
                     record.Write(newBytes);
                 }

@@ -1,8 +1,4 @@
-using System;
-using System.IO;
-using System.Reflection;
 using LibBundle3.Nodes;
-using LibGGPK3.Records;
 
 namespace PoeSmoother.Patches;
 
@@ -32,7 +28,7 @@ public class Shadow : IPatch
                     string data = System.Text.Encoding.Unicode.GetString(bytes.ToArray());
 
                     data = data.Replace("\"shadows_enabled\": true", "\"shadows_enabled\": false");
-                    
+
                     var newBytes = System.Text.Encoding.Unicode.GetBytes(data);
                     record.Write(newBytes);
                 }

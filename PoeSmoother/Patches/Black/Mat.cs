@@ -4,7 +4,7 @@ namespace PoeSmoother.Patches;
 
 public class Mat : IPatch
 {
-    public string Name => "Pet Patch (Experimental)";
+    public string Name => "Mat Patch (Experimental)";
     public object Description => "Black.";
 
     private readonly string[] extensions = {
@@ -13,19 +13,15 @@ public class Mat : IPatch
 
     private List<FileNode> fileNodes = [];
 
-    private string matContent = @"{
-""version"":4,
-""defaultgraph"": {
- ""version"":3
- }
-}";
+    private string matContent = "{\r\n\"version\":4,\r\n\"defaultgraph\": {\r\n \"version\":3\r\n }\r\n}";
 
     private byte[]? bytesContent = null;
 
     public Mat()
     {
-        bytesContent = System.Text.Encoding.Unicode.GetBytes(matContent);
+        bytesContent = System.Text.Encoding.UTF8.GetBytes(matContent);
     }
+
 
     private void CollectFileNodesRecursively(DirectoryNode dir)
     {
@@ -47,7 +43,12 @@ public class Mat : IPatch
 
     private void TryPatchFile(FileNode file)
     {
-        file.Record.Write(bytesContent);
+        var size = file.Record.Size - bytesContent.Length;
+        if (size < 1) return;
+
+        var newBytes = Enumerable.Repeat((byte)0x20, file.Record.Size).ToArray();
+        Array.Copy(bytesContent, newBytes, bytesContent.Length);
+        file.Record.Write(newBytes);
     }
 
     private bool HasTargetExtension(string fileName) =>

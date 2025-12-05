@@ -1,8 +1,4 @@
-using System;
-using System.IO;
-using System.Reflection;
 using LibBundle3.Nodes;
-using LibGGPK3.Records;
 
 namespace PoeSmoother.Patches;
 
@@ -57,7 +53,7 @@ public class Camera : IPatch
 
                     string pattern = @"(?:[\w_]+\.)?(?:" + string.Join("|", _functions.Select(System.Text.RegularExpressions.Regex.Escape)) + @")\s*\([^)]*\)\s*;";
                     data = System.Text.RegularExpressions.Regex.Replace(data, pattern, "");
-                    
+
                     var newBytes = System.Text.Encoding.Unicode.GetBytes(data);
                     record.Write(newBytes);
                 }

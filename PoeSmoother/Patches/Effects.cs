@@ -1,8 +1,4 @@
-using System;
-using System.IO;
-using System.Reflection;
 using LibBundle3.Nodes;
-using LibGGPK3.Records;
 
 namespace PoeSmoother.Patches;
 
@@ -35,7 +31,7 @@ public class Effects : IPatch
             if (openBraceIndex < 0) break;
             int braceCount = 1;
             int i = openBraceIndex + 1;
-            
+
             while (i < data.Length && braceCount > 0)
             {
                 if (data[i] == '{') braceCount++;

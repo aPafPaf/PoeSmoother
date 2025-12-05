@@ -1,6 +1,6 @@
 ﻿namespace PoeSmoother.Models;
 
-public class ColorModsOption 
+public class ColorModsOption
 {
     public string Name { get; set; }
     public string Color { get; set; }

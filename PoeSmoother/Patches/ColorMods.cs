@@ -1,9 +1,5 @@
 ﻿using LibBundle3.Nodes;
-using LibGGPK3.Records;
 using PoeSmoother.Models;
-using System;
-using System.IO;
-using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace PoeSmoother.Patches;

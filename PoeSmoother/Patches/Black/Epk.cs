@@ -33,7 +33,26 @@ public class Epk : IPatch
 
     private void TryPatchFile(FileNode file)
     {
-        var newBytes = System.Text.Encoding.Unicode.GetBytes(string.Empty);
+        long originalLength = file.Record.Size;
+        var newBytes = new byte[originalLength];
+
+        // UTF-16 LE BOM = FF FE
+        var bom = System.Text.Encoding.Unicode.GetPreamble(); // FF FE
+        int offset = 0;
+
+        // BOM
+        if (originalLength >= bom.Length)
+        {
+            Array.Copy(bom, 0, newBytes, 0, bom.Length);
+            offset = bom.Length;
+        }
+
+        for (int i = offset; i + 1 < originalLength; i += 2)
+        {
+            newBytes[i] = 0x20;     // ' ' (space)
+            newBytes[i + 1] = 0x00; // UTF-16 LE low byte
+        }
+
         file.Record.Write(newBytes);
     }
 
@@ -41,31 +60,9 @@ public class Epk : IPatch
         extensions.Any(ext =>
             fileName.EndsWith(ext, StringComparison.OrdinalIgnoreCase));
 
-    private DirectoryNode? FindDirectory(DirectoryNode start, params string[] path)
-    {
-        DirectoryNode? current = start;
-
-        foreach (var name in path)
-        {
-            current = current.Children
-                .OfType<DirectoryNode>()
-                .FirstOrDefault(c => c.Name == name);
-
-            if (current == null)
-                return null;
-        }
-
-        return current;
-    }
-
     public void Apply(DirectoryNode root)
     {
-        var metadataDir = FindDirectory(root, "metadata");
-
-        if (metadataDir is null)
-            return;
-
-        CollectFileNodesRecursively(metadataDir);
+        CollectFileNodesRecursively(root);
 
         foreach (var file in fileNodes)
         {

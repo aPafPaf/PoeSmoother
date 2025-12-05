@@ -1,6 +1,6 @@
+using PoeSmoother.Patches;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using PoeSmoother.Patches;
 
 namespace PoeSmoother.Models;
 

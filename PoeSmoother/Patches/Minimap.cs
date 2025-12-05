@@ -1,8 +1,4 @@
-using System;
-using System.IO;
-using System.Reflection;
 using LibBundle3.Nodes;
-using LibGGPK3.Records;
 
 namespace PoeSmoother.Patches;
 
@@ -39,7 +35,7 @@ public class Minimap : IPatch
                         var newBytes = System.Text.Encoding.ASCII.GetBytes(newData);
                         record.Write(newBytes);
                     }
-                    
+
                     if (f is FileNode file2 && file2.Name == "minimap_blending_pixel.hlsl")
                     {
                         var record = file2.Record;
@@ -48,11 +44,11 @@ public class Minimap : IPatch
 
                         data = data.Replace("float4 walkable_color = float4(1.0f, 1.0f, 1.0f, 0.01f);", "float4 walkable_color = float4(0.0f, 0.0f, 0.0f, 0.3f);");
                         data = data.Replace("float4 walkability_map_color = lerp(walkable_color, float4(0.5f, 0.5f, 1.0f, 0.5f), walkable_to_edge_ratio);", "float4 walkability_map_color = lerp(walkable_color, float4(12.0f, 12.0f, 12.0f, 0.1f), walkable_to_edge_ratio);");
-                        
+
                         var newBytes = System.Text.Encoding.ASCII.GetBytes(data);
                         record.Write(newBytes);
                     }
-                    
+
                 }
             }
         }

@@ -90,6 +90,7 @@ public class Aoc : IPatch
         }
 
         var newBytes = System.Text.Encoding.Unicode.GetBytes(data);
+
         record.Write(newBytes);
     }
 
