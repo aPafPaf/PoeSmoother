@@ -112,6 +112,7 @@ public partial class MainWindow : Window
             new Mat(),
             new Ffx(),
             new Hlsl(),
+            new Env(),
         };
 
         foreach (var patch in patchInstances)
